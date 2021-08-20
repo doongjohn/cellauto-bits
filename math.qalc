@@ -1,0 +1,10 @@
+val1 = 0b1011
+val2 = 0b1100
+
+res1 = bitXor(rightLogShift(val1, 1), leftShift(val2, 1))
+res2 = bitXor(leftShift(val1, 1), rightLogShift(val2, 1))
+res3 = bitXor(res1, res2)
+
+format(res1, bin)
+format(res2, bin)
+format(res3, bin)
