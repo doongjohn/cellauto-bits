@@ -9,16 +9,21 @@ class Grid {
     this.cellSize = cellSize;
     this.cellGap = cellGap;
 
-    this.width = this.gridSize.x * (this.cellSize.x + this.cellGap);
-    this.height = this.gridSize.y * (this.cellSize.y + this.cellGap);
+    this.width = gridSize.x * (cellSize.x + cellGap);
+    this.height = gridSize.y * (cellSize.y + cellGap);
 
     this.cells = [];
-    this.cells.length = this.gridSize.x * this.gridSize.y;
+    this.cells.length = gridSize.x * gridSize.y;
     this.cells.fill(null);
   }
 
   isOutOfBound(x, y) {
-    return x < 0 || x >= this.gridSize.x || y < 0 || y >= this.gridSize.y;
+    return (
+      x < 0 ||
+      y < 0 ||
+      x >= this.gridSize.x ||
+      y >= this.gridSize.y
+    );
   }
 
   indexToGridPos(i) {
@@ -28,7 +33,7 @@ class Grid {
     } else {
       return {
         x: i % this.gridSize.x,
-        y: Math.floor(i / this.gridSize.y)
+        y: Math.floor(i / this.gridSize.x)
       };
     }
   }
@@ -46,8 +51,8 @@ class Grid {
       return null;
     } else {
       return {
-        x: center.x - (this.width - this.cellGap) / 2 + (this.cellSize.x + this.cellGap) * x,
-        y: center.y - (this.height - this.cellGap) / 2 + (this.cellSize.y + this.cellGap) * y
+        x: this.pos.x - (this.width - this.cellGap) / 2 + (this.cellSize.x + this.cellGap) * x,
+        y: this.pos.y - (this.height - this.cellGap) / 2 + (this.cellSize.y + this.cellGap) * y
       };
     }
   }

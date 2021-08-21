@@ -1,10 +1,7 @@
-val1 = 0b1111
-val2 = 0b0111
+width = 300
+height = 200
+idx = 4000
 
-res1 = bitXor(val1, val2)
-res2 = bitXor(res1, val2)
-res3 = res2
-
-format(res1, bin)
-format(res2, bin)
-format(res3, bin)
+x = idx % width
+y = floor(idx / width)
+idx2 = (y * width) + x
