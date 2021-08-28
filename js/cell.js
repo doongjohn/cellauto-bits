@@ -1,3 +1,5 @@
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
 class Cell {
   constructor(data) {
     // data is 8bit clamped (0-255)
@@ -21,22 +23,22 @@ class Cell {
   }
   calc2(data, result, other) {
     const a = result ^ other;
-    const b = ~result & ~other;
+    const b = clamp(~result & ~other, 0, 255);
     return a ^ b;
   }
   calc3(data, result, other) {
     const a = result ^ other;
-    const b = ~result | ~other;
+    const b = clamp(~result | ~other, 0, 255);
     return a ^ b;
   }
   calc4(data, result, other) {
     const a = data;
-    const b = Math.min(~result * other, 255);
+    const b = clamp(~result * other, 0, 255);
     return a ^ b;
   }
   calc5(data, result, other) {
-    const a = ~result;
-    const b = Math.min(~result + other, 255);
+    const a = clamp(~result, 0, 255);
+    const b = clamp(~result + other, 0, 255);
     return a ^ b;
   }
   calc6(data, result, other) {
