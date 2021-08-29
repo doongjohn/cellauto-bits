@@ -3,10 +3,10 @@ class WorldConfig {
   static Finite = 1;  // this is more interesting
 }
 
-const worldConfig = WorldConfig.Wrapped;
+const worldConfig = WorldConfig.Finite;
 const grid = new Grid({
-  gridSize: { x: 10, y: 10 },
-  cellSize: { x: 20, y: 20 }
+  gridSize: { x: 220, y: 220 },
+  cellSize: { x: 4, y: 4 }
 });
 const others = [];
 others.length = 4;
@@ -14,16 +14,23 @@ others.length = 4;
 function init() {
   // init cells
   for (let i = 0; i < grid.cells.length; ++i) {
-    // grid.cells[i] = new Cell(getRandomInt(0, 256)); // random cell data
-    grid.cells[i] = i == grid.cells.length / 2 ? new Cell(255) : new Cell(0);
+    grid.cells[i] = new Cell(getRandomInt(0, 256)); // random cell data
+    // grid.cells[i] =  new Cell(0);
   }
+  // const iCenter = grid.cells.length / 2 + grid.gridSize.x / 2;
+  // const gCenter = grid.indexToGridPos(iCenter);
+  // grid.cells[iCenter] = new Cell(255);
+  // grid.cells[iCenter+1] = new Cell(100);
+  // grid.cells[iCenter-1] = new Cell(100);
+  // grid.cells[grid.gridPosToIndex(gCenter.x, gCenter.y + 1)] = new Cell(100);
+  // grid.cells[grid.gridPosToIndex(gCenter.x, gCenter.y - 1)] = new Cell(100);
 }
 
 function toBinString(num) {
   let result = '';
   if (num < 0)
     for (let i = 4; i >= 0; --i)
-      result += (~num + 1 >> i) % 2;
+      result += ((num >>> 0) >> i) % 2;
   else
     for (let i = 4; i >= 0; --i)
       result += (num >> i) % 2;
@@ -37,14 +44,14 @@ function loop() {
   grid.iterCellsScreenPos(function (i, pos) {
     // set color
     {
-      const hex = parseInt(toBinString(grid.cells[i].data), 2).toString(16);
+      let hex = (255 - parseInt(toBinString(grid.cells[i].data), 2)).toString(16);
+      hex.length < 2 && (hex += '0');
+      // console.log(hex);
       const x = hex[0];
       const y = hex[1];
-      console.log(grid.cells[i].data);
-      // gl.fillStyle = `#${hex}ffff`;
-      // gl.fillStyle = `#${x}f${y}faa`;
-      gl.fillStyle = `#${x}f${y}${x}ff`;
-      // console.log(`#${x}f${y}${x}ff`);
+      // gl.fillStyle = `#fff${hex}f`;
+      // gl.fillStyle = `#${x}f${y}fff`;
+      gl.fillStyle = `#${x}f${y}faa`;
     }
 
     // draw rect
@@ -66,7 +73,7 @@ function loop() {
         gridPos.y - 1 < 0 || (others[3] = grid.cells[grid.gridPosToIndex(gridPos.x, gridPos.y - 1)].data);
         break;
     }
-    grid.cells[i].calcNewDataRunner(1, ...others);
+    grid.cells[i].calcNewDataRunner(3, ...others);
   });
 
   // apply calculated data
@@ -75,8 +82,8 @@ function loop() {
   });
 
   // render loop
-  // requestAnimationFrame(loop);
-  setTimeout(loop, 1000);
+  requestAnimationFrame(loop);
+  // setTimeout(loop, 500);
 };
 
 function main() {

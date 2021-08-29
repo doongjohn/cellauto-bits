@@ -22,23 +22,25 @@ class Cell {
     return result ^ other;
   }
   calc2(data, result, other) {
+    // fav
     const a = result ^ other;
-    const b = clamp(~result & ~other, 0, 255);
+    const b = ~result & ~other;
     return a ^ b;
   }
   calc3(data, result, other) {
+    // fav
     const a = result ^ other;
-    const b = clamp(~result | ~other, 0, 255);
+    const b = ~result | ~other;
     return a ^ b;
   }
   calc4(data, result, other) {
     const a = data;
-    const b = clamp(~result * other, 0, 255);
+    const b = ~result * other;
     return a ^ b;
   }
   calc5(data, result, other) {
-    const a = clamp(~result, 0, 255);
-    const b = clamp(~result + other, 0, 255);
+    const a = ~result;
+    const b = ~result + other;
     return a ^ b;
   }
   calc6(data, result, other) {
@@ -57,8 +59,8 @@ class Cell {
     return a ^ b;
   }
   calc9(data, result, other) {
-    const a = ~result | other >>> 1;
-    const b = result | other << 1;
+    // const a = result | other;
+    // const b = ~result | ~other;
     return a ^ b;
   }
   calc10(data, result, other) {
@@ -67,6 +69,7 @@ class Cell {
     return a ^ b;
   }
   calc11(data, result, other) {
+    // fav
     const a = ~data ^ ~other >>> 1;
     const b = result | ~other << 1;
     return a ^ b;
@@ -77,6 +80,7 @@ class Cell {
     return a ^ b;
   }
   calc13(data, result, other) {
+    // fav
     const a = result ^ other >>> 1;
     const b = result & ~other << 1;
     return a ^ b;
